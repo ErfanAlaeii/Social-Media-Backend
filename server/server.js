@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -19,4 +19,5 @@ app.use(routes)
 
 app.listen(5000,()=>{
     console.log("Server is Runing on port 5000")
+    dbConnect()
 })
