@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+/package-lock.json # Keep package-lock.json in source control. Comment out if you don't want to commit it.
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Runtime files
+*. 실제로 Node.js가 실행될 때 생성되는 파일이나 디렉토리입니다.
+/pids
+*.pid
+*.seed
+*.sock
+
+# Directories for instrumented code
+/coverage
+/.nyc_output
+
+# Optional npm cache files
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional directories of bundled dependencies
+/bundle
+/dist
+/build
+/out
+
+# A download folder for dependency check
+/dependency-check-downloads
+
+# Optional yarn cache files
+.yarn-cache
+
+# Optional pnpm cache files
+.pnpm-store
+
+# Optional debugging files
+.node_repl_history
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS Files
+.DS_Store
+Thumbs.db
