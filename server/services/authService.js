@@ -35,7 +35,9 @@ export const loginUser = async (email, password) => {
 
     const passwordMatch = await bcrypt.compare(trimmedPassword, user.password);
     if (!passwordMatch) {
-        return res.status(401).json({ error: "Invalid Password" })
+        const error = new Error('Invalid credentials');
+        error.status = 401;
+        throw error;
     }
 
     const payload = {
