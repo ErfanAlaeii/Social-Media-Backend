@@ -4,13 +4,13 @@ import { loginUser, registerUser } from '../services/authService.js';
 //ثبت نام 
 
 export const register = async (req, res) => {
-    const { username, email, password } = req.body
+    const { username, email, password , role } = req.body
     if (!username || !email || !password) {
         return res.status(400).json({ message: "Missing required fields." });
     }
     try {
         //ما اطلاعاتی که از بدنه ی درخواست گرفتیم میدیم به تابع سرویس ثبت نام 
-        const newUser = await registerUser(username, email, password)
+        const newUser = await registerUser(username, email, password , role)
 
         //یک نسخه کپی به صورت شی جاوا اسکریپتی از چیزی که داخل دیتابیس ذخیره کردم
         const savedUserObject = newUser.toObject()

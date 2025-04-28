@@ -8,14 +8,15 @@ dotenv.config()
 const jwtSecret = process.env.JWT_SECRET
 
 //ثبت نام 
-export const registerUser = async (username, email, password) => {
+export const registerUser = async (username, email, password, role) => {
 
     //هش کردن رمز عبور
     const hashedPassword = bcrypt.hashSync(password, 10)
     const newUser = new UserModel({
         username: username,
         email: email,
-        password: hashedPassword
+        password: hashedPassword,
+        role:role
     })
     // ذخیره اطلاعات کاربر در دیتابیس
     await newUser.save()
@@ -26,7 +27,7 @@ export const registerUser = async (username, email, password) => {
 }
 
 
-export const loginUser = async (email, password,role) => {
+export const loginUser = async (email, password) => {
     const user = await UserModel.findOne({ email: email })
     if (!user) {
         return res.status(404).json({ meesage: "USer not found ...." })
