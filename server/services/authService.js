@@ -26,7 +26,7 @@ export const registerUser = async (username, email, password) => {
 }
 
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (email, password,role) => {
     const user = await UserModel.findOne({ email: email })
     if (!user) {
         return res.status(404).json({ meesage: "USer not found ...." })
@@ -42,7 +42,8 @@ export const loginUser = async (email, password) => {
 
     const payload = {
         id:user.id,
-        email:user.email
+        email:user.email,
+        role:user.role
     }
 
     const token = jwt.sign(payload,jwtSecret,{expiresIn:'1h'})
