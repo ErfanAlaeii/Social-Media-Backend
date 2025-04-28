@@ -22,7 +22,7 @@ export const updateUser = async (id, updateData) => {
                 runValidators: true
             }
         )
-        if(!user){
+        if (!user) {
             const error = new Error('User not found.');
             error.status = 404;
             throw error;
@@ -30,7 +30,18 @@ export const updateUser = async (id, updateData) => {
 
         return user
     }
-    catch(error){
+    catch (error) {
         throw error
     }
 }
+
+
+export const deletUser = async (id) => {
+    try {
+        const deletedUser = await userModel.findByIdAndDelete(id);
+        return deletedUser;
+    }
+    catch (error) {
+        throw error
+    }
+} 
