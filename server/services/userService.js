@@ -44,4 +44,14 @@ export const deletUser = async (id) => {
     catch (error) {
         throw error
     }
-} 
+}
+
+
+export const getUser = async (id) => {
+    try {
+        const user = await userModel.findById(id);
+        return user;
+    } catch (err) {
+        throw err;
+    }
+};

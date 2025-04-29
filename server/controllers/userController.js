@@ -1,4 +1,4 @@
-import { deletUser, updateUser } from "../services/userService.js";
+import { deletUser, updateUser,getUser } from "../services/userService.js";
 
 
 export const updateUserController = async (req, res) => {
@@ -45,3 +45,19 @@ export const deletUserController = async (req, res) => {
         res.status(500).json({ message: 'Error deleting user.', error: error.message });
     }
 }
+
+export const getUserController = async (req, res) => {
+    try {
+      const user = await getUser(req.params.id);
+      const userData = user.toObject()
+      delete userData.password
+      res.status(200).json({
+        userData,
+        message: "Account has been fetched Successfully",
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  };
+  
