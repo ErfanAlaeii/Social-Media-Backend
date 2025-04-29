@@ -5,6 +5,11 @@ dotenv.config()
 
 const jwtSecret = process.env.JWT_SECRET;
 
+if (!jwtSecret) {
+    console.error('FATAL ERROR: JWT_SECRET is not defined.');
+    process.exit(1);
+  }
+
 export const authmiddleware = async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1]
     if (!token) {
@@ -30,3 +35,14 @@ export const checkAdminRole = async (req, res, next) => {
         return res.status(403).json({message:"Access denied. Admins only."})
     }
 }
+
+export const isOwnerOrAdminMiddleware = async (req, res, next) => {
+    const targetUserId = req.params.id;
+    const authenticatedUser = req.user;
+
+    if (authenticatedUser && (authenticatedUser.role === 'admin' || authenticatedUser.id.toString() === targetUserId)) {
+         next();
+    } else {
+        return res.status(403).json({ message: 'Access denied. You must be the owner or an admin.' });
+    }
+};
