@@ -86,3 +86,29 @@ export const followUser = async (followerInfo, followedUserInfo) => {
         }
     }
 }
+
+
+export const unfollowUser = async (unfollowerInfo, unfollowUserInfo) => {
+    if (unfollowerInfo.id === unfollowUserInfo) {
+        throw new Error("You cannot unfollow yourself");
+    }
+    else{
+        try{
+            const user = await userModel.findById(unfollowerInfo.id)
+            const currentUser = await userModel.findById(unfollowUserInfo.id)
+
+            if(user.followings.includes(unfollowUserInfo.id)){
+                await currentUser.updateOne({$pull:{followers:unfollowerInfo.id}},{new:true})
+                await user.updateOne({$pull:{followings:unfollowUserInfo.id}},{new:true})
+
+                return {user,currentUser}
+            }
+            else{
+                throw new Error("You don't follow this user");
+            }
+        }
+        catch(error){
+            throw error
+        }
+    }
+}

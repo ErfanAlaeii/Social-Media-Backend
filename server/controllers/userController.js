@@ -1,4 +1,4 @@
-import { deletUser, updateUser, getUser, followUser } from "../services/userService.js";
+import { deletUser, updateUser, getUser, followUser, unfollowUser } from "../services/userService.js";
 
 
 export const updateUserController = async (req, res) => {
@@ -93,6 +93,43 @@ export const followUserController = async (req, res) => {
         else {
             console.error('Error in followUserController:', error);
             res.status(500).json({ message: 'An internal error occurred while following user.', error: error.message });
+        }
+    }
+}
+
+
+export const unfollowUserController = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            console.error('Error: Authenticated user ID not available in req.user');
+            return res.status(401).json({ message: "Authentication failed or user ID missing." });
+        }
+        const unfollowerId = req.user.id
+
+        const unfollowedUserId = req.params.id
+
+        if (!unfollowedUserId) {
+            return res.status(400).json({ message: "Unfollowed user ID is missing from URL." });
+        }
+
+        const unfollowerInfo = { id: unfollowerId };
+        const unfollowUserInfo = { id: unfollowedUserId };
+
+        const updatedUsers = await unfollowUser(unfollowerInfo, unfollowUserInfo)
+
+        return res.status.json({
+            updatedUsers,
+            message: "User unfollowed successfully."
+        })
+
+    }
+    catch (error) {
+        if (error.message === "You cannot unfollow yourself" || error.message === "You don't follow this user") {
+            return res.status(400).json({ message: error.message });
+        }
+        else {
+            console.error('Error in unfollowUserController:', error);
+            res.status(500).json({ message: 'An internal error occurred while unfollowing user.', error: error.message });
         }
     }
 }
