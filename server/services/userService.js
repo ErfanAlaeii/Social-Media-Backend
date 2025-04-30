@@ -55,3 +55,34 @@ export const getUser = async (id) => {
         throw err;
     }
 };
+
+
+export const followUser = async (followerInfo, followedUserInfo) => {
+    //چک می‌کند که آیا کاربر تلاش می‌کند خودش را دنبال کند
+    if (followerInfo.id === followedUserInfo.id) {
+        throw new Error("You cannot follow yourself");
+    }
+    else {
+        try {
+            //پیدا کردن داکیومنت کاربر دنبال‌کننده از دیتابیس
+            const user = await userModel.findById(followerInfo.id)
+            //پیدا کردن داکیومنت کاربری که قرار است دنبال شود از دیتابیس
+            const currentUser = await userModel.findById(followedUserInfo.id)
+
+            if (!user.followings.includes(currentUser.id)) {
+                //اضافه کردن آیدی کاربر دنبال‌کننده به لیست followers کاربر دنبال‌شونده در دیتابیس
+                await currentUser.updateOne({ $push: { followers: followerInfo.id } })
+                //اضافه کردن آیدی کاربر دنبال‌شونده به لیست followings کاربر دنبال‌کننده در دیتابیس
+                await user.updateOne({ $push: { followings: followedUserInfo.id } })
+
+                return { user, currentUser }
+            }
+            else {
+                throw new Error("You have already followed this user");
+            }
+        }
+        catch (error) {
+            throw error
+        }
+    }
+}
